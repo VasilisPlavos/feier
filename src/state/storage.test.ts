@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { BACKUP_KEY, STORAGE_KEY, loadState, saveState } from "./storage";
+import { BACKUP_KEY, CALENDARS_PANEL_KEY, STORAGE_KEY, loadState, saveState } from "./storage";
 import { createDefaultState } from "./defaults";
 import { exportStateJson } from "./exportImport";
 
@@ -23,8 +23,35 @@ function throwingStorage(): Storage {
 }
 
 describe("storage", () => {
-  test("uses the los-feier keys", () => {
-    expect([STORAGE_KEY, BACKUP_KEY]).toEqual(["los-feier.state", "los-feier.state.backup"]);
+  test("uses the feier keys", () => {
+    expect([STORAGE_KEY, BACKUP_KEY, CALENDARS_PANEL_KEY]).toEqual([
+      "feier.state",
+      "feier.state.backup",
+      "feier.calendarsPanel.open",
+    ]);
+  });
+
+  test("moves data from the old los-feier keys", () => {
+    const storage = memoryStorage();
+    const state = { ...createDefaultState(), leave: { "2026-04-07": 1 as const } };
+    storage.setItem("los-feier.state", JSON.stringify(state));
+    storage.setItem("los-feier.state.backup", "{old");
+    storage.setItem("los-feier.calendarsPanel.open", "1");
+    expect(loadState(storage)).toEqual({ state, recoveredBackup: null });
+    expect(storage.getItem(BACKUP_KEY)).toBe("{old");
+    expect(storage.getItem(CALENDARS_PANEL_KEY)).toBe("1");
+    expect(storage.getItem("los-feier.state")).toBeNull();
+    expect(storage.getItem("los-feier.state.backup")).toBeNull();
+    expect(storage.getItem("los-feier.calendarsPanel.open")).toBeNull();
+  });
+
+  test("an existing feier key wins over the old los-feier key", () => {
+    const storage = memoryStorage();
+    const state = { ...createDefaultState(), leave: { "2026-04-07": 1 as const } };
+    storage.setItem(STORAGE_KEY, JSON.stringify(state));
+    storage.setItem("los-feier.state", JSON.stringify(createDefaultState()));
+    expect(loadState(storage).state).toEqual(state);
+    expect(storage.getItem("los-feier.state")).toBeNull();
   });
 
   test("round-trips the state", () => {
