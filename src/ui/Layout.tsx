@@ -129,7 +129,7 @@ export function Layout() {
         {recoveredBackup !== null && (
           <div className="banner" data-kind="error" role="alert">
             {t("errors.recovered")}
-            <button type="button" onClick={() => downloadText("los-feier-backup.json", recoveredBackup)}>
+            <button type="button" onClick={() => downloadText("feier-backup.json", recoveredBackup)}>
               {t("errors.downloadBackup")}
             </button>
             <button type="button" onClick={dismissRecovered}>{t("common.dismiss")}</button>

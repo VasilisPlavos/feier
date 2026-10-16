@@ -2,8 +2,30 @@ import type { AppState } from "../core/types";
 import { createDefaultState } from "./defaults";
 import { parseStateText } from "./schema";
 
-export const STORAGE_KEY = "los-feier.state";
-export const BACKUP_KEY = "los-feier.state.backup";
+export const STORAGE_KEY = "feier.state";
+export const BACKUP_KEY = "feier.state.backup";
+export const CALENDARS_PANEL_KEY = "feier.calendarsPanel.open";
+
+/** Keys from before the rename to Feier, mapped to the keys that replace them. */
+const LEGACY_KEYS: [string, string][] = [
+  ["los-feier.state", STORAGE_KEY],
+  ["los-feier.state.backup", BACKUP_KEY],
+  ["los-feier.calendarsPanel.open", CALENDARS_PANEL_KEY],
+];
+
+/** Moves each old los-feier value to its new key once; a value already under the new key wins. */
+function migrateLegacyKeys(storage: Storage): void {
+  for (const [oldKey, newKey] of LEGACY_KEYS) {
+    try {
+      const value = storage.getItem(oldKey);
+      if (value === null) continue;
+      if (storage.getItem(newKey) === null) storage.setItem(newKey, value);
+      storage.removeItem(oldKey);
+    } catch {
+      // Best effort: if storage refuses, the old key stays and we try again next time.
+    }
+  }
+}
 
 /** localStorage if it can actually be written, otherwise null (private mode, blocked, …). */
 export function getStorage(): Storage | null {
@@ -21,6 +43,7 @@ export function getStorage(): Storage | null {
 export function loadState(storage: Storage | null): { state: AppState; recoveredBackup: string | null } {
   const fresh = { state: createDefaultState(), recoveredBackup: null };
   if (!storage) return fresh;
+  migrateLegacyKeys(storage);
   let raw: string | null;
   try {
     raw = storage.getItem(STORAGE_KEY);

@@ -3,12 +3,11 @@ import { profileFor, profileYearFor, type Profiles } from "../core/profiles";
 import type { CalendarFile, CalendarIndexEntry } from "../core/types";
 import { calendarRegions } from "../data/calendars";
 import { useI18n } from "../i18n/I18nProvider";
-
-const OPEN_KEY = "los-feier.calendarsPanel.open";
+import { CALENDARS_PANEL_KEY } from "../state/storage";
 
 function readOpen(): boolean {
   try {
-    return localStorage.getItem(OPEN_KEY) === "1";
+    return localStorage.getItem(CALENDARS_PANEL_KEY) === "1";
   } catch {
     return false;
   }
@@ -16,7 +15,7 @@ function readOpen(): boolean {
 
 function writeOpen(open: boolean): void {
   try {
-    localStorage.setItem(OPEN_KEY, open ? "1" : "0");
+    localStorage.setItem(CALENDARS_PANEL_KEY, open ? "1" : "0");
   } catch {
     // Only a per-browser convenience; the panel works without it.
   }

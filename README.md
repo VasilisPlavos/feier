@@ -1,23 +1,12 @@
-# los-feier
+# Feier
 
 Plan your leave around public holidays. See the whole year as 12 months (3 × 4), pick your country and region, adjust holidays, set your weekly working days, click the days you take off, and instantly see how many leave days you used and every 3-, 4-, … day break you get.
 
+*Feier* means public holiday in German and Swiss German.
+
 A modern, open-source successor of the old argies.gr calendar.
 
-**Live:** <https://vasilisplavos.github.io/los-feier/>
-
-## Why “Los Feier”?
-
-The name reads two ways, and both fit:
-
-1. **Spanish: *Los Feier*.** *Los* is the Spanish article “the”, and *Feier* is the German word for a celebration or a day off. Together they read like “The Holidays”, a Spanish–German hybrid that sounds like *Los Festivos*, light and friendly.
-2. **German / Swiss: *Los, feier!*** *Los!* is the German for “Go! / Off you go!”, and *feier* is the imperative of *feiern*: to celebrate, to rest, to take the day off. So *Los, feier!* literally means “Go on, celebrate!” or “Start your holidays!”.
-
-Why it works as a brand:
-
-- **Short and punchy.** Two syllables, easy to remember, and it fits nicely on an app icon.
-- **Positive vibe.** It sounds like a nudge to go and rest, not like a bureaucratic calendar.
-- **A nod to Swiss culture.** In Switzerland, *Feier* (as in *Feierabend*, *Feiertag*) is the word for time off, so locals get it right away.
+**Live:** <https://vasilisplavos.github.io/feier/>
 
 ## Features
 
@@ -36,12 +25,12 @@ Requirements: Node.js 20+.
 
 ```bash
 npm install
-npm run dev          # http://localhost:5173/los-feier/
+npm run dev          # http://localhost:5173/feier/
 npm run test         # unit tests (watch mode)
 npm run test:run     # unit tests once
 npm run test:e2e     # Playwright mobile tests (first time: npx playwright install chromium)
 npm run build        # production build into dist/
-npm run preview      # serve dist/ at http://localhost:4173/los-feier/
+npm run preview      # serve dist/ at http://localhost:4173/feier/
 ```
 
 ## Updating the holiday data

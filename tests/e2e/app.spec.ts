@@ -19,7 +19,7 @@ const seededState = {
 test.describe("with a Zurich profile", () => {
   test.beforeEach(async ({ page }) => {
     await page.addInitScript((state) => {
-      if (!localStorage.getItem("los-feier.state")) localStorage.setItem("los-feier.state", JSON.stringify(state));
+      if (!localStorage.getItem("feier.state")) localStorage.setItem("feier.state", JSON.stringify(state));
     }, seededState);
   });
 
@@ -84,12 +84,12 @@ test.describe("with a Zurich profile", () => {
   test("header bar picks a year, the hero follows it and About opens", async ({ page }) => {
     await page.goto("./#2026");
     const banner = page.getByRole("banner");
-    await expect(banner.getByRole("heading", { name: "Los Feier!", level: 1 })).toBeVisible();
+    await expect(banner.getByRole("heading", { name: "Feier", level: 1 })).toBeVisible();
     await banner.getByRole("combobox", { name: "Year" }).selectOption("2028");
     await expect(page.getByRole("heading", { name: "Holiday calendar 2028" })).toBeVisible();
     await expect(page).toHaveURL(/#2028$/);
     await banner.getByRole("button", { name: "About" }).click();
-    await expect(page.getByRole("dialog", { name: "About Los Feier" })).toBeVisible();
+    await expect(page.getByRole("dialog", { name: "About Feier" })).toBeVisible();
   });
 
   test("bottom tabs switch panels", async ({ page }) => {
@@ -105,7 +105,7 @@ test.describe("REVIEW FOCUS: timezone west of UTC", () => {
   test.use({ timezoneId: "America/Los_Angeles" });
 
   test.beforeEach(async ({ page }) => {
-    await page.addInitScript((state) => localStorage.setItem("los-feier.state", JSON.stringify(state)), seededState);
+    await page.addInitScript((state) => localStorage.setItem("feier.state", JSON.stringify(state)), seededState);
   });
 
   test("dates stay under the right weekday and clicks store the same date", async ({ page }) => {
@@ -114,7 +114,7 @@ test.describe("REVIEW FOCUS: timezone west of UTC", () => {
     await expect(day).toHaveAttribute("data-weekday", "1"); // Tuesday
     await expect(page.locator('[data-date="2026-04-06"]')).toHaveAttribute("data-holiday", "1"); // Easter Monday
     await day.click();
-    const leave = await page.evaluate(() => JSON.parse(localStorage.getItem("los-feier.state")!).leave);
+    const leave = await page.evaluate(() => JSON.parse(localStorage.getItem("feier.state")!).leave);
     expect(leave).toEqual({ "2026-04-07": 1 });
   });
 });
@@ -129,7 +129,7 @@ test.describe("first run in Greek", () => {
     await expect(dialog.getByRole("checkbox", { name: "Διακοπές στην Ελλάδα" })).toBeChecked();
     await dialog.getByRole("button", { name: "Συνέχεια" }).click();
     await expect(dialog).toBeHidden();
-    await expect(page.getByRole("heading", { name: "Los Feier!", level: 1 })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Feier", level: 1 })).toBeVisible();
     await expect(page.getByRole("tab", { name: "Αργίες" })).toBeVisible();
     await expect(page.locator('[data-date="2026-03-25"]')).toHaveAttribute("data-holiday", "1");
   });

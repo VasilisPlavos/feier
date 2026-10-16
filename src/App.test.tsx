@@ -45,11 +45,11 @@ afterEach(() => {
 const seed = (overrides = {}) => localStorage.setItem(STORAGE_KEY, JSON.stringify(makeState(overrides)));
 
 describe("App", () => {
-  test("shows the Los Feier brand in the header in every language", async () => {
+  test("shows the Feier brand in the header in every language", async () => {
     stubFetch();
     seed({ language: "el" });
     render(<App />);
-    expect(await screen.findByRole("heading", { level: 1, name: "Los Feier!" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { level: 1, name: "Feier" })).toBeInTheDocument();
   });
 
   test("the header bar has the year, About and Settings, and no year arrows", async () => {
@@ -95,7 +95,7 @@ describe("App", () => {
     seed();
     render(<App />);
     await userEvent.click(screen.getByRole("button", { name: "About" }));
-    expect(screen.getByRole("dialog", { name: "About Los Feier" })).toBeInTheDocument();
+    expect(screen.getByRole("dialog", { name: "About Feier" })).toBeInTheDocument();
   });
 
   test("first run asks for calendars with the browser-language suggestion checked", async () => {
