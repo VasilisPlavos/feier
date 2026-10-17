@@ -7,3 +7,10 @@ playwright-report/
 *.log
 public/data/
 .superpowers/
+
+
+# Agents related
+.claude/
+.playwright-mcp/
+/docs/superpowers/plans
+/docs/superpowers/specs
